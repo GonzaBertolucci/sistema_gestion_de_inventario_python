@@ -33,3 +33,33 @@ class Ventas(Base):
 #  cantidad = Column(Integer, nullable=False)
 #  precio_x_unidad = Column(Float, nullable=False)
 #  detalles = relationship('detalles_de_ventas', back_populates="venta")
+
+class Proveedor(Base):
+    __tablename__ = "proveedores"
+    id_Prov = Column (Integer(), primary_key=True, autoincrement=True)
+    nombre_Prov = Column (String(50), nullable = False, unique=True)
+    prov_Activo = Column (Boolean, default=True, nullable = False)
+    proveedor = relationship("Producto",back_populates="provEnProd")
+
+class Cat_Prod(Base):
+    __tablename__ = "catsDeProducto"
+    id_Cat = Column (Integer(), primary_key=True, autoincrement=True)
+    nombre_Cat = Column (String(50), nullable = False)
+    desc_Cat = Column (String(50), nullable = False)
+    cat_Activo = Column (Boolean, default=True, nullable = False)
+    categoria = relationship("Producto",back_populates="catEnProd")
+
+class Producto(Base):
+    __tablename__ = "productos"
+    id_Prod = Column (Integer(), primary_key=True, autoincrement=True)
+    id_Prov = Column (Integer(), ForeignKey("proveedores.id_Prov") )
+    id_Cat = Column (Integer(), ForeignKey("catsDeProducto.id_Cat"))
+    nombre_Prod = Column (String(50), nullable = False)
+    desc_Prod = Column (String(50), nullable = False)
+    precio_Cost_Prod = Column (Float())
+    precio_Venta_Prod = Column (Float())
+    stock_Prod = Column (Integer())
+    cod_Barrs_Prod = Column (Integer())
+    prod_Activo = Column (Boolean, default=True, nullable = False)
+    provEnProd = relationship("Proveedor",back_populates="proveedor")
+    catEnProd = relationship("Cat_Prod",back_populates="categoria")

@@ -1,5 +1,6 @@
 from database import SessionLocal
 from models import Usuario
+from models import Proveedor
 
 
 db = SessionLocal()
@@ -18,7 +19,11 @@ usuario_prueba2 = Usuario(
   activo = False
 )
 
+addProv = Proveedor(
+    nombre_Prov = "Pepsico"
+)
 
+'''
 db.add(usuario_prueba)
 db.commit()
 db.close()
@@ -27,5 +32,10 @@ print("Usuario1 agregado correctamente...")
 db.add(usuario_prueba2)
 db.commit()
 db.close()
-
 print("Usuario2 agregado correctamente...")
+'''
+
+db.add(addProv)
+db.commit()
+db.close()
+print("Se añadio correctamente el proovedor")
