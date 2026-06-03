@@ -1,13 +1,19 @@
-from database import Base, engine
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-import models
-import schemas
-from database import engine, SessionLocal
+import models.models as models
+import schemas.schemas as schemas
+
+from db.database import Base, engine, SessionLocal
 
 Base.metadata.create_all(bind = engine)
 
-app = FastAPI()
+app = FastAPI(title="Gestión de Inventario")
+
+'''
+# Incluyes las rutas separadas
+app.include_router(proveedores.router, prefix="/proveedores", tags=["Proveedores"])
+app.include_router(usuarios.router, prefix="/usuarios", tags=["Usuarios"])
+'''
 
 #funcion para abrir y cerrar la bd por cada peticion web que llegue
 def get_db():

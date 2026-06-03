@@ -1,6 +1,6 @@
-from database import SessionLocal
-from models import Usuario
-from models import Proveedor
+from db.database import SessionLocal
+from models.models import Usuario
+from models.models import Proveedor
 
 
 db = SessionLocal()
