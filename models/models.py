@@ -6,7 +6,7 @@ from datetime import datetime
 from db.database import Base
 
 
-"""
+'''
 class Usuario(Base):
     __tablename__ = "usuarios"
     id_usuario = Column(Integer, primary_key=True, autoincrement=True)
