@@ -1,5 +1,5 @@
 from db.database import SessionLocal
-from models.models import Usuario
+from models.usuario import Usuario
 from models.models import Proveedor
 
 
