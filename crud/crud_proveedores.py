@@ -6,7 +6,7 @@ from db.database import SessionLocal
 import models.proveedor as models
 import schemas.proveedor as schemas
 
-# C R U D temporal proveedores
+# C R U D proveedores
 
 app = FastAPI()
 db = SessionLocal()
