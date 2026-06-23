@@ -14,7 +14,7 @@ class Producto(Base):
     precio_Cost_Prod = Column(Float())
     precio_Venta_Prod = Column(Float())
     stock_Prod = Column(Integer())
-    cod_Barrs_Prod = Column(Integer())
+    cod_Barrs_Prod = Column(String(10), nullable=False)
     prod_Activo = Column(Boolean, default=True, nullable=False)
     provEnProd = relationship("Proveedor", back_populates="proveedor")
     catEnProd = relationship("Cat_Prod", back_populates="categoria")

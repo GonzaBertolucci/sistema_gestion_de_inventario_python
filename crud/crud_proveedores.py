@@ -1,34 +1,18 @@
-from fastapi import FastAPI, Depends
-from sqlalchemy import String, select
 from sqlalchemy.orm import Session
-
-from db.database import SessionLocal
-import models.proveedor as models
-import schemas.proveedor as schemas
+from models.proveedor import Proveedor
+from schemas.proveedor import Agregar_Proveedor
 
 # C R U D proveedores
 
-app = FastAPI()
-db = SessionLocal()
 
+def agregar_nuevo_proveedor(db: Session, provedor_data: Agregar_Proveedor):
+    nuevo_proveedor = Proveedor(nombre_Prov=provedor_data.nombre_Prov)
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-@app.post("/proveedores/", response_model=schemas.Response_Proovedor)
-def Agregar_proveedor(
-    provedor: schemas.Agregar_Proveedor, db: Session = Depends(get_db)
-):
-    Nuevo_proveedor = models.Proveedor(nombre_Prov=provedor.nombre_Prov)
-    db.add(Nuevo_proveedor)
+    db.add(nuevo_proveedor)
     db.commit()
-    db.refresh(Nuevo_proveedor)
-    return Nuevo_proveedor
+    db.refresh(nuevo_proveedor)
+
+    return nuevo_proveedor
 
 
 """
