@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from db.database import get_db
 from schemas.usuario import Crear_usuario, Response_usuario
-from crud.crud_usuarios import crear_nuevo_usuario, obtener_todos_los_usuarios,obtener_usuario_por_id
+from crud.crud_usuarios import crear_nuevo_usuario, obtener_todos_los_usuarios,obtener_usuario_por_id, actualizar_usuario, eliminar_usuario_logico
 from typing import List
 
 
@@ -30,3 +30,22 @@ def leer_usuario_por_id(usuario_id: int, db:Session = Depends(get_db)):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = "Usuario no encontrado")
 
     return usuario
+
+@router.put("/{usuario_id}", response_model=Response_usuario)
+def modificar_usuario(usuario_id: int, datos_nuevos: Crear_usuario,db: Session = Depends(get_db)):
+    
+    usuario_actualizado = actualizar_usuario(db=db, usuario_id = usuario_id, datos_actualizados = datos_nuevos)
+    
+    if usuario_actualizado is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = "El usuario a modificar no existe")
+
+    return usuario_actualizado
+
+@router.delete("/{usuario_id}", response_model= Response_usuario)
+def borrar_usuario(usuario_id: int, db:Session = Depends(get_db)):
+    usuario_eliminado = eliminar_usuario_logico(db=db, usuario_id=usuario_id)
+    
+    if usuario_eliminado is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = "El usuario a eliminar no existe")
+    
+    return usuario_eliminado

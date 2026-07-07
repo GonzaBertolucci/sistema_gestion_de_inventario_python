@@ -22,3 +22,31 @@ def obtener_todos_los_usuarios(db: Session):
 def obtener_usuario_por_id(db: Session, usuario_id: int):
     ## .filter() es el where de SQL, y .first() devuelve el primer resultado de la consulta
     return db.query(Usuario).filter(Usuario.id_usuario == usuario_id).first()
+
+def actualizar_usuario(db: Session, usuario_id: int, datos_actualizados: Crear_usuario):
+    usuario_db=obtener_usuario_por_id (db, usuario_id)
+    
+    if usuario_db is None:
+        return None
+    
+    usuario_db.nombre_usuario = datos_actualizados.nombre_usuario
+    usuario_db.rol_usuario = datos_actualizados.rol_usuario
+    usuario_db.contrasenia_usuario = datos_actualizados.contrasenia_usuario
+    
+    db.commit()
+    db.refresh(usuario_db)
+    
+    return usuario_db
+
+def eliminar_usuario_logico(db: Session, usuario_id: int):
+    usuario_db = obtener_usuario_por_id(db, usuario_id)
+    
+    if usuario_db is None:
+        return None
+    
+    usuario_db.activo = False
+    
+    db.commit()
+    db.refresh(usuario_db)
+    
+    return usuario_db
