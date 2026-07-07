@@ -14,3 +14,11 @@ def crear_nuevo_usuario(db: Session, usuario_data: Crear_usuario):
     db.refresh(nuevo_usuario)
     
     return nuevo_usuario
+
+#Trae todos los usuarios, el .all() le dice a Alchemy que traiga todo
+def obtener_todos_los_usuarios(db: Session):
+    return db.query(Usuario).all()
+
+def obtener_usuario_por_id(db: Session, usuario_id: int):
+    ## .filter() es el where de SQL, y .first() devuelve el primer resultado de la consulta
+    return db.query(Usuario).filter(Usuario.id_usuario == usuario_id).first()
