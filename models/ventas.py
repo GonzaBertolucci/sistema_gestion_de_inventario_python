@@ -16,4 +16,3 @@ class Ventas(Base):
   vendedor = relationship("Usuario", back_populates="ventas")
   detalles = relationship("Detalles_de_ventas", back_populates="venta")
   
-  #Refactor usuario schemas and CRUD operations to use updated data models; add new product creation function in CRUD.
