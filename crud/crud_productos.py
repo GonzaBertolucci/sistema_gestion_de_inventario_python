@@ -27,6 +27,16 @@ def Agregar_nuevo_producto(db: Session, producto_data: Agregar_Producto):
     return nuevo_producto
 
 
+def Agregar_nuevo_producto2(db: Session, producto_data: Agregar_Producto):
+    nuevo_producto = Producto(**producto_data.model_dump())
+
+    db.add(nuevo_producto)
+    db.commit()
+    db.refresh(nuevo_producto)
+
+    return nuevo_producto
+
+
 def Leer_productos(
     db: Session,
     id_Prov: Optional[int] = None,
