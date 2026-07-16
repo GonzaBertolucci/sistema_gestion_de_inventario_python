@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from models.usuario import Usuario
-from schemas.usuario import Crear_usuario
+from schemas.usuario import UsuarioCreate, UsuarioUpdate, UsuarioBase, Response_usuario
 
-def crear_nuevo_usuario(db: Session, usuario_data: Crear_usuario):
+def crear_nuevo_usuario(db: Session, usuario_data: UsuarioCreate):
     nuevo_usuario = Usuario(
         nombre_usuario = usuario_data.nombre_usuario,
         rol_usuario = usuario_data.rol_usuario,
@@ -23,15 +23,23 @@ def obtener_usuario_por_id(db: Session, usuario_id: int):
     ## .filter() es el where de SQL, y .first() devuelve el primer resultado de la consulta
     return db.query(Usuario).filter(Usuario.id_usuario == usuario_id).first()
 
-def actualizar_usuario(db: Session, usuario_id: int, datos_actualizados: Crear_usuario):
+def actualizar_usuario(db: Session, usuario_id: int, datos_actualizados: UsuarioUpdate):
     usuario_db=obtener_usuario_por_id (db, usuario_id)
     
     if usuario_db is None:
         return None
     
-    usuario_db.nombre_usuario = datos_actualizados.nombre_usuario
-    usuario_db.rol_usuario = datos_actualizados.rol_usuario
-    usuario_db.contrasenia_usuario = datos_actualizados.contrasenia_usuario
+    if datos_actualizados.nombre_usuario is not None:
+        usuario_db.nombre_usuario = datos_actualizados.nombre_usuario    
+    
+    if datos_actualizados.rol_usuario is not None:
+        usuario_db.rol_usuario = datos_actualizados.rol_usuario
+        
+    if datos_actualizados.contrasenia_usuario is not None:
+        usuario_db.contrasenia_usuario = datos_actualizados.contrasenia_usuario
+    
+    if datos_actualizados.activo is not None:
+        usuario_db.activo = datos_actualizados.activo
     
     db.commit()
     db.refresh(usuario_db)

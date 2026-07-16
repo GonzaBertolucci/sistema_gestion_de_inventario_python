@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from api.routes import categorias_productos, productos, proveedores, usuarios, ventas
+from api.routes import categorias_productos, productos, proveedores, usuarios, ventas, detalles_de_ventas
 import models.usuario
 import models.ventas
 import models.detalles_de_ventas
@@ -19,6 +19,8 @@ app.include_router(proveedores.router, prefix="/proveedores", tags=["Proveedores
 app.include_router(categorias_productos.router, prefix="/c", tags=["Categorias"])
 
 app.include_router(productos.router, prefix="/productos", tags=["Productos"])
+
+app.include_router(detalles_de_ventas.router, prefix="/detalles_ventas", tags=["Detalles de ventas"])
 
 
 """
