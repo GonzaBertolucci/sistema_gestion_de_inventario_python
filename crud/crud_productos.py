@@ -1,14 +1,11 @@
-import re
 from typing import Optional
 
 from sqlalchemy.orm import Session
 from models.producto import Producto
-from schemas.producto import Agregar_Producto
-
-# C R U D temporal productos
+from schemas.producto import Agregar_Producto, Modificar_Producto
 
 
-def Agregar_nuevo_producto(db: Session, producto_data: Agregar_Producto):
+def agregar_nuevo_producto(db: Session, producto_data: Agregar_Producto):
     nuevo_producto = Producto(
         id_Prov=producto_data.id_Prov,
         id_Cat=producto_data.id_Cat,
@@ -27,8 +24,9 @@ def Agregar_nuevo_producto(db: Session, producto_data: Agregar_Producto):
     return nuevo_producto
 
 
-def Leer_productos(
+def leer_productos(
     db: Session,
+    id_Prod: Optional[int] = None,
     id_Prov: Optional[int] = None,
     id_Cat: Optional[int] = None,
     nombre: Optional[str] = None,
@@ -41,6 +39,9 @@ def Leer_productos(
     cod_barra: Optional[str] = None,
 ):
     query = db.query(Producto).filter(Producto.prod_Activo == True)
+
+    if id_Prod:
+        query = query.filter(Producto.id_Prod == id_Prod)
 
     if id_Prov:
         query = query.filter(Producto.id_Prov == id_Prov)
@@ -74,3 +75,40 @@ def Leer_productos(
 
     return query.all()
 
+
+def actualizar_productos(
+    db: Session,
+    id_Prod: int,
+    producto_data: Modificar_Producto,
+):
+
+    Producto_bd = db.query(Producto).filter(Producto.id_Prod == id_Prod).first()
+
+    if not Producto_bd:
+        return None
+
+    update_data = producto_data.model_dump(exclude_unset=True)
+
+    update_data.pop("id_Prod", None)
+
+    for key, value in update_data.items():
+        setattr(Producto_bd, key, value)
+
+    db.commit()
+    db.refresh(Producto_bd)
+
+    return Producto_bd
+
+
+def dar_de_baja_productos(db: Session, id_Prod: int):
+    producto_data = db.query(Producto).filter(Producto.id_Prod == id_Prod).first()
+
+    if not producto_data:
+        return None
+
+    producto_data.prod_Activo = False
+
+    db.commit()
+    db.refresh(producto_data)
+
+    return producto_data
