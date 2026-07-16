@@ -73,3 +73,4 @@ def Leer_productos(
         query = query.filter(Producto.cod_Barrs_Prod.ilike(f"%{cod_barra}%"))
 
     return query.all()
+
