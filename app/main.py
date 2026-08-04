@@ -8,6 +8,10 @@ import models.producto
 import models.proveedor
 import models.categoria_producto
 
+from db.database import engine, Base
+
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI(title="Gestión de Inventario")
 
 app.include_router(usuarios.router, prefix="/usuarios", tags=["Usuarios"])
